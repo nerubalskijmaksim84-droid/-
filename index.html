@@ -1,90 +1,283 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Мой Видео Хостинг</title>
-    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
-    <style>
-        body { font-family: sans-serif; background: #111; color: white; text-align: center; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; }
-        .upload-btn { background: #ff0050; color: white; padding: 15px 30px; border: none; border-radius: 30px; font-size: 18px; cursor: pointer; margin-bottom: 30px; }
-        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .video-card { background: #222; padding: 10px; border-radius: 10px; }
-        video { width: 100%; border-radius: 8px; }
-        h2 { color: #ff0050; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cat & Dog World</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f1226;
+      --card: rgba(255, 255, 255, 0.1);
+      --text: #f7f8ff;
+      --accent: #7f7dff;
+      --accent-2: #45d0ff;
+      --good: #39d98a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', system-ui, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top left, #343078, transparent 45%),
+                  radial-gradient(circle at bottom right, #1f5b82, transparent 45%),
+                  var(--bg);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .bubble {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(3px);
+      opacity: 0.25;
+      animation: float 10s infinite ease-in-out;
+      z-index: -1;
+    }
+
+    .bubble.one { width: 160px; height: 160px; left: 5%; top: 20%; background: var(--accent); }
+    .bubble.two { width: 220px; height: 220px; right: 8%; top: 10%; background: var(--accent-2); animation-delay: 2s; }
+    .bubble.three { width: 120px; height: 120px; right: 20%; bottom: 10%; background: #ff7fe2; animation-delay: 4s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .container {
+      width: min(1100px, 92vw);
+      margin: 24px auto 50px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 28px;
+      border-radius: 28px;
+      background: linear-gradient(120deg, rgba(127, 125, 255, 0.3), rgba(69, 208, 255, 0.22));
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      animation: pulse 3.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 rgba(127, 125, 255, 0.25); }
+      50% { box-shadow: 0 0 30px rgba(127, 125, 255, 0.35); }
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+      letter-spacing: 0.3px;
+      font-weight: 800;
+    }
+
+    .subtitle { opacity: 0.9; margin-top: 8px; }
+
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      border: none;
+      color: #fff;
+      padding: 11px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    button:hover { transform: translateY(-2px); opacity: 0.96; }
+
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); }
+    .btn-secondary { background: rgba(255, 255, 255, 0.18); border: 1px solid rgba(255, 255, 255, 0.2); }
+    .btn-google { background: #ffffff; color: #1f1f1f; }
+    .btn-apple { background: #101113; }
+
+    .login-panel {
+      margin: 22px auto 0;
+      max-width: 620px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .login-panel h2 { margin: 0; font-size: 1.1rem; }
+
+    .field-row {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    }
+
+    input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 10px;
+      color: #fff;
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    .status {
+      min-height: 22px;
+      color: var(--good);
+      font-size: 0.94rem;
+      font-weight: 600;
+    }
+
+    .gallery {
+      margin-top: 26px;
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .card {
+      overflow: hidden;
+      border-radius: 20px;
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+      backdrop-filter: blur(8px);
+      animation: rise 0.55s ease both;
+    }
+
+    @keyframes rise {
+      from { transform: translateY(16px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .card:hover {
+      transform: translateY(-5px) rotate(-0.4deg);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+    }
+
+    .card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card .info { padding: 12px 14px 16px; }
+    .tag { font-size: 0.8rem; opacity: 0.85; }
+    .title { margin: 4px 0 0; font-size: 1.06rem; font-weight: 700; }
+
+    .small-note {
+      margin-top: 10px;
+      font-size: 0.82rem;
+      opacity: 0.78;
+    }
+  </style>
 </head>
 <body>
+  <div class="bubble one"></div>
+  <div class="bubble two"></div>
+  <div class="bubble three"></div>
 
-<div class="container">
-    <h1>🎬 My Video Platform</h1>
-    <p>Загружай видео и смотри их прямо здесь</p>
-    
-    <!-- Кнопка загрузки -->
-    <button id="upload_widget" class="upload-btn">➕ Опубликовать видео</button>
+  <main class="container">
+    <section class="hero">
+      <h1>🐱🐶 Cat & Dog World</h1>
+      <p class="subtitle">Good animation, cool style, and account creation with Google + Apple (macOS).</p>
+      <div class="actions">
+        <button class="btn-primary" id="show-all">Show All</button>
+        <button class="btn-secondary" id="show-cats">Only Cats</button>
+        <button class="btn-secondary" id="show-dogs">Only Dogs</button>
+      </div>
 
-    <h2>Лента видео</h2>
-    <div id="video-feed" class="video-grid">
-        <!-- Сюда будут добавляться видео -->
-    </div>
-</div>
+      <section class="login-panel">
+        <h2>Create account</h2>
+        <div class="field-row">
+          <input id="name" placeholder="Your name" />
+          <input id="email" type="email" placeholder="Email address" />
+        </div>
+        <div class="actions" style="margin-top:0;">
+          <button id="create-account" class="btn-primary">Create account</button>
+          <button id="google-signup" class="btn-google">G Continue with Google</button>
+          <button id="apple-signup" class="btn-apple"> Continue with Apple (macOS)</button>
+        </div>
+        <div id="status" class="status" aria-live="polite"></div>
+        <p class="small-note">This is a front-end demo. Connect your Google/Apple OAuth keys in production.</p>
+      </section>
+    </section>
 
-<script>
-    // --- НАСТРОЙКИ (Вставь свои данные здесь) ---
-    const CLOUD_NAME = "ТВОЙ_CLOUD_NAME"; 
-    const UPLOAD_PRESET = "ТВОЙ_PRESET_NAME"; 
+    <section id="gallery" class="gallery"></section>
+  </main>
 
-    const videoFeed = document.getElementById('video-feed');
+  <script>
+    const pets = [
+      { type: 'cat', title: 'Sleepy Neon Cat', image: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=900&q=80' },
+      { type: 'dog', title: 'Happy Park Dog', image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=900&q=80' },
+      { type: 'cat', title: 'Curious Blue-Eyed Cat', image: 'https://images.unsplash.com/photo-1511044568932-338cba0ad803?auto=format&fit=crop&w=900&q=80' },
+      { type: 'dog', title: 'Running Golden Friend', image: 'https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=80' },
+      { type: 'cat', title: 'Fluffy Cat Portrait', image: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=900&q=80' },
+      { type: 'dog', title: 'Cool Husky Style', image: 'https://images.unsplash.com/photo-1605568427561-40dd23c2acea?auto=format&fit=crop&w=900&q=80' }
+    ];
 
-    // Функция для добавления видео на страницу
-    function addVideoToFeed(url, publicId) {
-        const card = document.createElement('div');
-        card.className = 'video-card';
+    const gallery = document.getElementById('gallery');
+    const statusText = document.getElementById('status');
+
+    function renderCards(filter = 'all') {
+      gallery.innerHTML = '';
+      const list = pets.filter(p => filter === 'all' || p.type === filter);
+
+      list.forEach((pet, i) => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.style.animationDelay = `${i * 60}ms`;
         card.innerHTML = `
-            <video controls>
-                <source src="${url}" type="video/mp4">
-                Ваш браузер не поддерживает видео.
-            </video>
-            <p style="font-size: 12px; color: #888;">ID: ${publicId}</p>
+          <img src="${pet.image}" alt="${pet.title}" loading="lazy">
+          <div class="info">
+            <div class="tag">${pet.type.toUpperCase()}</div>
+            <p class="title">${pet.title}</p>
+          </div>
         `;
-        videoFeed.prepend(card);
+        gallery.appendChild(card);
+      });
     }
 
-    // Настройка виджета загрузки
-    var myWidget = cloudinary.createUploadWidget({
-        cloudName: CLOUD_NAME, 
-        uploadPreset: UPLOAD_PRESET,
-        sources: ['local', 'url', 'camera'],
-        resourceType: 'video'
-    }, (error, result) => { 
-        if (!error && result && result.event === "success") { 
-            console.log('Готово! Данные видео:', result.info);
-            addVideoToFeed(result.info.secure_url, result.info.public_id);
-            
-            // Сохраняем ссылку в браузере, чтобы не пропала при перезагрузке
-            saveVideoLocally(result.info.secure_url);
-        }
+    function setStatus(message) {
+      statusText.textContent = message;
+    }
+
+    document.getElementById('show-all').addEventListener('click', () => renderCards('all'));
+    document.getElementById('show-cats').addEventListener('click', () => renderCards('cat'));
+    document.getElementById('show-dogs').addEventListener('click', () => renderCards('dog'));
+
+    document.getElementById('create-account').addEventListener('click', () => {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      if (!name || !email) {
+        setStatus('Please enter your name and email.');
+        return;
+      }
+      setStatus(`Welcome, ${name}! Account created for ${email}.`);
     });
 
-    document.getElementById("upload_widget").addEventListener("click", function(){
-        myWidget.open();
-    }, false);
+    document.getElementById('google-signup').addEventListener('click', () => {
+      window.open('https://accounts.google.com/signup', '_blank', 'noopener');
+      setStatus('Google signup opened in a new tab.');
+    });
 
-    // Функции для сохранения списка видео в памяти браузера
-    function saveVideoLocally(url) {
-        let videos = JSON.parse(localStorage.getItem('my_videos') || '[]');
-        videos.push(url);
-        localStorage.setItem('my_videos', JSON.stringify(videos));
-    }
+    document.getElementById('apple-signup').addEventListener('click', () => {
+      window.open('https://appleid.apple.com/account', '_blank', 'noopener');
+      setStatus('Apple account page opened (macOS/iPhone).');
+    });
 
-    function loadVideos() {
-        let videos = JSON.parse(localStorage.getItem('my_videos') || '[]');
-        videos.forEach(url => addVideoToFeed(url, 'Saved'));
-    }
-
-    // Загрузить видео при открытии страницы
-    loadVideos();
-</script>
-
+    renderCards('all');
+  </script>
 </body>
 </html>
